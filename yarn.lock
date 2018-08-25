@@ -6803,6 +6803,10 @@ vue-style-loader@^4.1.0:
     hash-sum "^1.0.2"
     loader-utils "^1.0.2"
 
+vue-swatches@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/vue-swatches/-/vue-swatches-1.0.1.tgz#4a17d7b837c995fc9df0f8d90ea2f57fe49cf68a"
+
 vue-template-compiler@^2.5.17:
   version "2.5.17"
   resolved "https://registry.yarnpkg.com/vue-template-compiler/-/vue-template-compiler-2.5.17.tgz#52a4a078c327deb937482a509ae85c06f346c3cb"

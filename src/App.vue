@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import PixelBoard from './components/PixelBoard/PixelBoard.vue';
+import PixelBoard from './components/PixelBoard.vue';
 
 @Component({
   components: {
