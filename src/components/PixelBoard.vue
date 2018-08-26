@@ -1,12 +1,13 @@
 <template>
   <div>
     <Swatches
+      class="swatches"
       v-if="showColorDialog"
       v-model="color"
+      colors="material-basic"
       :close-on-select=false
       @close="onDialogClose"
       :style="{
-        position: 'absolute',
         top: colorPickerPosition.y + 'px',
         left: colorPickerPosition.x + 'px',
       }" />
@@ -15,7 +16,7 @@
         <div
           class="pixel"
           v-for="p in pixels"
-          :key="p.x"
+          :key="p['.key']"
           :style="{
             backgroundColor: p.color,
             top: p.y + 'px',
@@ -78,8 +79,8 @@ export default class PixelBoard extends Vue {
     }
 
     return {
-      x: this.selectedPixel.x - 15,
-      y: this.selectedPixel.y + 15,
+      x: this.selectedPixel.x - 22,
+      y: this.selectedPixel.y + 8,
     };
   }
 
@@ -107,6 +108,11 @@ export default class PixelBoard extends Vue {
 }
 </script>
 
+<style lang="stylus">
+  .vue-swatches__trigger
+    box-shadow 0px 0px 3px 1px rgba(119, 119, 119, 0.4);
+</style>
+
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="stylus">
   .pixel-board
@@ -118,5 +124,9 @@ export default class PixelBoard extends Vue {
     position absolute
     width 10px
     height 10px
-
+  
+  .swatches
+    height 0
+    position 'absolute'
+    z-index 1
 </style>
