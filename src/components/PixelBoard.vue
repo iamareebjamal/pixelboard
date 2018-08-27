@@ -95,7 +95,7 @@ export default class PixelBoard extends Vue {
 
     return {
       x: this.selectedPixel.x - 22,
-      y: this.selectedPixel.y + 8,
+      y: this.selectedPixel.y - 35,
     };
   }
 

@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <div class="title">PixelBoard</div>
     <PixelBoard class="pixel-board" />
   </div>
 </template>
@@ -28,4 +29,11 @@ html, body
 
 .pixel-board
   height 100%
+
+.title
+  font-family 'Lobster', cursive
+  font-size 2.5rem
+  color #555
+  width 175px
+  margin 0 auto
 </style>
