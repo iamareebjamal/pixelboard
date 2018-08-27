@@ -11,6 +11,16 @@
         top: colorPickerPosition.y + 'px',
         left: colorPickerPosition.x + 'px',
       }" />
+    <div
+      class="remove"
+      v-if="selectedPixelKey"
+      @click="remove"
+      :style="{
+        top: (selectedPixel.y - 30) + 'px',
+        left: (selectedPixel.x - 5) + 'px',
+      }">
+      <span>x</span>
+    </div>
     <div class="pixel-board" @click="addPixel" :style="{
         cursor: this.ready ? 'pointer': 'inherit'
       }">
@@ -26,16 +36,14 @@
           }"
         >
       </div>
-      <div>
-        <div
-          class="pixel"
-          v-if="showColorDialog"
-          :style="{
-            backgroundColor: color,
-            top: selectedPixel.y + 'px',
-            left: selectedPixel.x + 'px',
-          }"></div>
-        </div>
+      <div
+        class="pixel"
+        v-if="showColorDialog"
+        :style="{
+          backgroundColor: color,
+          top: selectedPixel.y + 'px',
+          left: selectedPixel.x + 'px',
+        }"></div>
       </div>
       <div v-if="loading" class="loading">
         <img src="https://loading.io/spinners/dual-ring/index.dual-ring-loader.svg" height="80px" width="80px" alt="Loading">
@@ -58,6 +66,10 @@ interface Pixel {
   y: number
 }
 
+interface PixelReference extends Pixel {
+  '.key': string
+}
+
 const defaultColor = '#888'
 
 @Component({
@@ -76,9 +88,10 @@ const defaultColor = '#888'
 })
 export default class PixelBoard extends Vue {
   private color = defaultColor
-  private pixels = {}
+  private pixels: PixelReference[] = []
   private loading = true
   private selectedPixel: Pixel | null = null
+  private selectedPixelKey: string | null = null
 
   private get ready() {
     return !this.loading
@@ -99,6 +112,22 @@ export default class PixelBoard extends Vue {
     }
   }
 
+  private remove() {
+    if (this.selectedPixelKey !== null) {
+    // @ts-ignore
+    (this.$firebaseRefs.pixels as firebase.database.Reference)
+      .child(this.selectedPixelKey)
+      .remove((error: Error | null) => {
+        if (error !== null) {
+          alert('Could not remove pixel. Please try again')
+        }
+      })
+    }
+
+    this.selectedPixel = null
+    this.selectedPixelKey = null
+  }
+
   private onDialogClose() {
     if (this.color !== defaultColor) {
       // @ts-ignore
@@ -111,15 +140,42 @@ export default class PixelBoard extends Vue {
         }
       })
       this.selectedPixel = null
+      this.selectedPixelKey = null
       this.color = defaultColor
     }
   }
 
   private addPixel(event: { clientX: number, clientY: number }) {
+    if (this.loading) {
+      return
+    }
+
     this.selectedPixel = {
       x: event.clientX - (event.clientX % 10),
       y: event.clientY - (event.clientY % 10),
     }
+
+    const pixels = this.pixels
+                .filter(item => this.selectedPixel !== null &&
+                  item.x === this.selectedPixel.x &&
+                  item.y === this.selectedPixel.y)
+
+    const latest = pixels.pop()
+    this.selectedPixelKey = latest !== undefined ? latest['.key'] : null
+
+    // TODO: Add a cloud function to delete stale points
+    /*
+    if (pixels.length > 0) {
+      // @ts-ignore
+      const pixelsReference = (this.$firebaseRefs.pixels as firebase.database.Reference)
+      const updatePayload: Record<string, null> = {}
+      pixels.forEach(item => {
+        updatePayload[item['.key']] = null
+      })
+
+      pixelsReference.update(updatePayload)
+    }
+    */
   }
 }
 </script>
@@ -145,8 +201,23 @@ export default class PixelBoard extends Vue {
   
   .swatches
     height 0
-    position 'absolute'
     z-index 1
+  
+  .remove
+    cursor pointer
+    position absolute
+    background-color #ffcdd2
+    color #f44336
+    width 20px
+    height 20px
+    border-radius 20px
+    z-index 1
+  
+  .remove:hover
+    box-shadow 0px 0px 3px 1px rgba(119, 119, 119, 0.4)
+  
+  .remove>span
+    padding-left 6px
   
   .loading
     width 100px
