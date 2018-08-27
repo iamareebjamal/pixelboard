@@ -1,1 +1,1 @@
-declare module 'vuefire';
+declare module 'vuefire'

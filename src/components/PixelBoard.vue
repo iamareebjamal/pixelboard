@@ -45,20 +45,20 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator'
 
-import { FirebaseRefs } from '@/decorators';
-import { db } from '@/firebase';
+import { FirebaseRefs } from '@/decorators'
+import { db } from '@/firebase'
 
-import Swatches from 'vue-swatches';
-import 'vue-swatches/dist/vue-swatches.min.css';
+import Swatches from 'vue-swatches'
+import 'vue-swatches/dist/vue-swatches.min.css'
 
 interface Pixel {
-  x: number;
-  y: number;
+  x: number
+  y: number
 }
 
-const defaultColor = '#888';
+const defaultColor = '#888'
 
 @Component({
   components: {
@@ -70,33 +70,33 @@ const defaultColor = '#888';
     source: db.ref('pixels'),
     readyCallback() {
       // @ts-ignore
-      this.loading = false;
+      this.loading = false
     },
   },
 })
 export default class PixelBoard extends Vue {
-  private color = defaultColor;
-  private pixels = {};
-  private loading = true;
-  private selectedPixel: Pixel | null = null;
+  private color = defaultColor
+  private pixels = {}
+  private loading = true
+  private selectedPixel: Pixel | null = null
 
   private get ready() {
-    return !this.loading;
+    return !this.loading
   }
 
   private get showColorDialog() {
-    return this.selectedPixel !== null;
+    return this.selectedPixel !== null
   }
 
   private get colorPickerPosition(): Pixel {
     if (this.selectedPixel === null) {
-      return {x: 0, y: 0};
+      return {x: 0, y: 0}
     }
 
     return {
       x: this.selectedPixel.x - 22,
       y: this.selectedPixel.y - 35,
-    };
+    }
   }
 
   private onDialogClose() {
@@ -107,11 +107,11 @@ export default class PixelBoard extends Vue {
         color: this.color,
       }, (error: Error | null) => {
         if (error !== null) {
-          alert('Failed to set color. Sorry');
+          alert('Failed to set color. Sorry')
         }
-      });
-      this.selectedPixel = null;
-      this.color = defaultColor;
+      })
+      this.selectedPixel = null
+      this.color = defaultColor
     }
   }
 
@@ -119,14 +119,14 @@ export default class PixelBoard extends Vue {
     this.selectedPixel = {
       x: event.clientX - (event.clientX % 10),
       y: event.clientY - (event.clientY % 10),
-    };
+    }
   }
 }
 </script>
 
 <style lang="stylus">
   .vue-swatches__trigger
-    box-shadow 0px 0px 3px 1px rgba(119, 119, 119, 0.4);
+    box-shadow 0px 0px 3px 1px rgba(119, 119, 119, 0.4)
   
   .vue-swatches:first-child
     width 42px
@@ -149,15 +149,17 @@ export default class PixelBoard extends Vue {
     z-index 1
   
   .loading
-    width: 100px;
-    height: 100px;
+    width 100px
+    height 100px
 
-    position:absolute;
-    left:0; right:0;
-    top:0; bottom:0;
-    margin:auto;
+    position absolute
+    left 0
+    right 0
+    top 0
+    bottom 0
+    margin auto
 
-    max-width:100%;
-    max-height:100%;
-    overflow:auto;
+    max-width 100%
+    max-height 100%
+    overflow auto
 </style>

@@ -6,8 +6,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import PixelBoard from './components/PixelBoard.vue';
+import { Component, Vue } from 'vue-property-decorator'
+import PixelBoard from './components/PixelBoard.vue'
 
 @Component({
   components: {

@@ -1,13 +1,13 @@
-import Vue from 'vue';
-import App from './App.vue';
-import './registerServiceWorker';
+import Vue from 'vue'
+import App from './App.vue'
+import './registerServiceWorker'
 
-import VueFire from 'vuefire';
+import VueFire from 'vuefire'
 
-Vue.config.productionTip = false;
+Vue.config.productionTip = false
 
-Vue.use(VueFire);
+Vue.use(VueFire)
 
 new Vue({
   render: (h) => h(App),
-}).$mount('#app');
+}).$mount('#app')
