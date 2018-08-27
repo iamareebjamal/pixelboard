@@ -5,8 +5,16 @@ interface FirebaseComponentOptions extends ComponentOptions<Vue> {
   firebase?: object;
 }
 
-export function FirebaseRefs(refs: Record<string, firebase.database.Reference>): VueDecorator {
+interface VueFireReference {
+  source: firebase.database.Reference;
+  asObject?: boolean;
+  cancelCallback?: () => void;
+  readyCallback?: () => void;
+}
+
+export function FirebaseRefs(refs: Record<string, firebase.database.Reference | VueFireReference>): VueDecorator {
   return createDecorator((componentOptions: FirebaseComponentOptions, key) => {
+    console.log(componentOptions);
     if (typeof componentOptions.firebase !== 'object') {
       componentOptions.firebase = refs;
     } else {

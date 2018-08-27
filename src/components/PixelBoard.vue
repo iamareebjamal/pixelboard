@@ -11,7 +11,9 @@
         top: colorPickerPosition.y + 'px',
         left: colorPickerPosition.x + 'px',
       }" />
-    <div class="pixel-board" @click="addPixel">
+    <div class="pixel-board" @click="addPixel" :style="{
+        cursor: this.ready ? 'pointer': 'inherit'
+      }">
       <div class="marked">
         <div
           class="pixel"
@@ -35,6 +37,9 @@
           }"></div>
         </div>
       </div>
+      <div v-if="loading" class="loading">
+        <img src="https://loading.io/spinners/dual-ring/index.dual-ring-loader.svg" height="80px" width="80px" alt="Loading">
+      </div>
     </div>
   </div>
 </template>
@@ -42,8 +47,8 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
-import { FirebaseRefs } from '../decorators';
-import { db } from '../firebase';
+import { FirebaseRefs } from '@/decorators';
+import { db } from '@/firebase';
 
 import Swatches from 'vue-swatches';
 import 'vue-swatches/dist/vue-swatches.min.css';
@@ -53,7 +58,6 @@ interface Pixel {
   y: number;
 }
 
-const pixelsRef = db.ref('pixels');
 const defaultColor = '#888';
 
 @Component({
@@ -62,12 +66,23 @@ const defaultColor = '#888';
   },
 })
 @FirebaseRefs({
-  pixels: pixelsRef,
+  pixels: {
+    source: db.ref('pixels'),
+    readyCallback() {
+      // @ts-ignore
+      this.loading = false;
+    },
+  },
 })
 export default class PixelBoard extends Vue {
   private color = defaultColor;
   private pixels = {};
+  private loading = true;
   private selectedPixel: Pixel | null = null;
+
+  private get ready() {
+    return !this.loading;
+  }
 
   private get showColorDialog() {
     return this.selectedPixel !== null;
@@ -86,7 +101,8 @@ export default class PixelBoard extends Vue {
 
   private onDialogClose() {
     if (this.color !== defaultColor) {
-      pixelsRef.push({
+      // @ts-ignore
+      (this.$firebaseRefs.pixels as firebase.database.Reference).push({
         ...this.selectedPixel,
         color: this.color,
       }, (error: Error | null) => {
@@ -111,13 +127,15 @@ export default class PixelBoard extends Vue {
 <style lang="stylus">
   .vue-swatches__trigger
     box-shadow 0px 0px 3px 1px rgba(119, 119, 119, 0.4);
+  
+  .vue-swatches:first-child
+    width 42px
 </style>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="stylus">
   .pixel-board
     background-color: #eee
-    cursor pointer
     border-radius 10px
   
   .pixel
@@ -129,4 +147,17 @@ export default class PixelBoard extends Vue {
     height 0
     position 'absolute'
     z-index 1
+  
+  .loading
+    width: 100px;
+    height: 100px;
+
+    position:absolute;
+    left:0; right:0;
+    top:0; bottom:0;
+    margin:auto;
+
+    max-width:100%;
+    max-height:100%;
+    overflow:auto;
 </style>
