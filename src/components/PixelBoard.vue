@@ -131,14 +131,25 @@ export default class PixelBoard extends Vue {
   private onDialogClose() {
     if (this.color !== defaultColor) {
       // @ts-ignore
-      (this.$firebaseRefs.pixels as firebase.database.Reference).push({
-        ...this.selectedPixel,
-        color: this.color,
-      }, (error: Error | null) => {
+      const pixelsRef = (this.$firebaseRefs.pixels as firebase.database.Reference)
+      const errorHandler = (error: Error | null) => {
         if (error !== null) {
           alert('Failed to set color. Sorry')
         }
-      })
+      }
+
+      if (this.selectedPixelKey === null) {
+        pixelsRef.push({
+          ...this.selectedPixel,
+          color: this.color,
+        }, errorHandler)
+      } else {
+        pixelsRef.child(this.selectedPixelKey)
+          .update({
+            color: this.color,
+          }, errorHandler)
+      }
+
       this.selectedPixel = null
       this.selectedPixelKey = null
       this.color = defaultColor
