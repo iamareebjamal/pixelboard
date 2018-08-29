@@ -1,4 +1,7 @@
 # pixelboard
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/iamareebjamal/pixelboard.svg)](https://greenkeeper.io/)
+
 > A Reddit Place pseudo-clone made in Firebase and VueJS
 
 
