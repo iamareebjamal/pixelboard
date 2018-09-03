@@ -156,14 +156,14 @@ export default class PixelBoard extends Vue {
     }
   }
 
-  private addPixel(event: { clientX: number, clientY: number }) {
+  private addPixel(event: { pageX: number, pageY: number }) {
     if (this.loading) {
       return
     }
 
     this.selectedPixel = {
-      x: event.clientX - (event.clientX % 10),
-      y: event.clientY - (event.clientY % 10),
+      x: event.pageX - (event.pageX % 10),
+      y: event.pageY - (event.pageY % 10),
     }
 
     const pixels = this.pixels
