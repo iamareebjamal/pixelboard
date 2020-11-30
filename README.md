@@ -17,37 +17,6 @@ A Reddit Place pseudo-clone made in Firebase and VueJS
 3. Create "Create a Project"
 4. Enter a project name - other details can be left default
 
-### Enable Realtime Database
-
-Todo: This whole section might not be required
-
-1. From inside your project console, click Realtime Database
-
-![Databse location image](https://i.imgur.com/6eH5OMu.png)
-
-2. Click Create Database
-
-*Feel free to leave defaults - our deploy will change the rules later!*
-
-Todo: This is definitely not required
-
-3. From within the Realtime Database, click Rules
-
-![Rules location image](https://i.imgur.com/NCKsxxt.png)
-
-4. Replace the entire rules set with the following:
-
-```
-{
-  "rules": {
-    ".read": true,
-    ".write": true
-  }
-}
-```
-
-![Rules image](https://i.imgur.com/QhzLyHV.png)
-
 ### Enable Free Hosting
 
 #### Configure Project Rules for You
@@ -109,4 +78,6 @@ Todo: This is definitely not required
 ![Hosting URL location](https://i.imgur.com/P7i6KDD.png)
 
 
-- Todo: An image of it running
+# Live Demos
+
+Demo 1: https://pixelboardsetupclone1.web.app/
