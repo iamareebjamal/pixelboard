@@ -4,9 +4,11 @@ A Reddit Place pseudo-clone made in Firebase and VueJS
 
 ## Live deployment 
 
-### Get the project locally
+### Clone the project locally
 
 *We'll need it later*
+
+1. `git clone https://github.com/iamareebjamal/pixelboard`
 
 ### Create a project at [Firebase](https://console.firebase.google.com/)
 
@@ -80,9 +82,9 @@ Todo: This is definitely not required
 
 ![Firebase SDK Snippit Config](https://i.imgur.com/rzQmGE5.png)
 
-8. Create a file in `src/` called `firebaseconf.ts`, and make it export a *jsonified* version of your Firebase SDK snippit config
+8. Create a file in `src/` called `firebaseconf.ts`, and make it `export default` your Firebase SDK snippit config
 
-![Example of step 8](https://i.imgur.com/nXqF6YX.png)
+![Example of step 8](https://i.imgur.com/d5xfqos.png)
 
 #### Compile
 
